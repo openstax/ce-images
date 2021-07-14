@@ -23,7 +23,7 @@ resources:
   - name: python3-poetry
     type: docker-image
     source:
-      repository: openstax/python-poetry
+      repository: openstax/python3-poetry
       <<: *docker-credentials
 
   - name: python-base-dockerfile
