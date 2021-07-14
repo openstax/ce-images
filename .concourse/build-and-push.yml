@@ -1,0 +1,47 @@
+---
+docker-credentials: &docker-credentials
+  username: ((ce-dockerhub-id))
+  password: ((ce-dockerhub-token))
+
+resource_types:
+  - name: meta
+    type: docker-image
+    source:
+      repository: swce/metadata-resource
+      <<: *docker-credentials
+
+resources:
+  - name: meta
+    type: meta
+  
+  - name: python3-base
+    type: docker-image
+    source:
+      repository: openstax/python
+      <<: *docker-credentials
+
+  - name: python-base-dockerfile
+    type: git
+    source:
+      uri: https://github.com/openstax/ce-images.git
+      branch: main
+      paths:
+        - python/Dockerfile
+jobs:
+  - name: build-publish-python-base
+    plan:
+      - get: meta
+      - get: python-base-dockerfile
+        trigger: true
+      - task: generate-timestamp-tag
+        file: python-base-dockerfile/.concourse/tasks/generate-tag/task.yml
+      - put: python3-base
+        params:
+          build: python3-base-dockerfile/python
+          tag_file: generated-tag/TAG
+          tag_as_latest: true
+
+
+
+
+
