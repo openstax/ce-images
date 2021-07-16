@@ -3,6 +3,10 @@ docker-credentials: &docker-credentials
   username: ((ce-dockerhub-id))
   password: ((ce-dockerhub-token))
 
+ecr-credentials: &ecr-credentials
+  aws_secret_access_key: ((ce-ecr-user-access-key))
+  aws_access_key_id: ((ce-ecr-user-access-key-id))
+
 resource_types:
   - name: meta
     type: docker-image
@@ -14,17 +18,30 @@ resources:
   - name: meta
     type: meta
   
-  - name: python3-base
+  # - name: python3-base
+  #   type: docker-image
+  #   source:
+  #     repository: openstax/python3-base
+  #     <<: *docker-credentials
+  
+  - name: python3-base-ecr
     type: docker-image
     source:
-      repository: openstax/python3-base
-      <<: *docker-credentials
+      repository: 373045849756.dkr.ecr.us-east-2.amazonaws.com/python3-base
+      <<: *ecr-credentials
+
+  # - name: python3-poetry
+  #   type: docker-image
+  #   source:
+  #     repository: openstax/python3-poetry
+  #     <<: *docker-credentials
 
   - name: python3-poetry
     type: docker-image
     source:
-      repository: openstax/python3-poetry
-      <<: *docker-credentials
+      repository: 373045849756.dkr.ecr.us-east-2.amazonaws.com/python3-poetry
+      <<: *ecr-credentials
+
 
   - name: python-base-dockerfile
     type: git
@@ -49,7 +66,7 @@ jobs:
         trigger: true
       - task: generate-timestamp-tag
         file: python-base-dockerfile/.concourse/tasks/generate-tag/task.yml
-      - put: python3-base
+      - put: python3-base-ecr
         params:
           build: python-base-dockerfile/python
           tag_file: generated-tag/TAG
