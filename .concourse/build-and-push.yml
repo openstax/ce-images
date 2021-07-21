@@ -4,8 +4,8 @@ docker-credentials: &docker-credentials
   password: ((ce-dockerhub-token))
 
 ecr-credentials: &ecr-credentials
-  aws_secret_access_key: ((ce-ecr-user-access-key))
-  aws_access_key_id: ((ce-ecr-user-access-key-id))
+  aws_secret_access_key: ((ce_ecr_user_access_key))
+  aws_access_key_id: ((ce_ecr_user_access_key_id))
 
 resource_types:
   - name: meta
@@ -27,21 +27,14 @@ resources:
   - name: python3-base-ecr
     type: docker-image
     source:
-      repository: 373045849756.dkr.ecr.us-east-2.amazonaws.com/python3-base
+      repository: 258998078732.dkr.ecr.us-east-2.amazonaws.com/python3-base
       <<: *ecr-credentials
-
-  # - name: python3-poetry
-  #   type: docker-image
-  #   source:
-  #     repository: openstax/python3-poetry
-  #     <<: *docker-credentials
 
   - name: python3-poetry
     type: docker-image
     source:
-      repository: 373045849756.dkr.ecr.us-east-2.amazonaws.com/python3-poetry
+      repository: 258998078732.dkr.ecr.us-east-2.amazonaws.com/python3-poetry
       <<: *ecr-credentials
-
 
   - name: python-base-dockerfile
     type: git
