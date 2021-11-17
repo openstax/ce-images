@@ -18,23 +18,29 @@ resources:
   - name: meta
     type: meta
   
-  # - name: python3-base
-  #   type: docker-image
-  #   source:
-  #     repository: openstax/python3-base
-  #     <<: *docker-credentials
-  
   - name: python3-base-ecr
     type: docker-image
     source:
       repository: 258998078732.dkr.ecr.us-east-2.amazonaws.com/python3-base
       <<: *ecr-credentials
+  
+  - name: python3-base-docker
+    type: docker-image
+    source:
+      repository: openstax/python3-base
+      <<: *docker-credentials
 
-  - name: python3-poetry
+  - name: python3-poetry-ecr
     type: docker-image
     source:
       repository: 258998078732.dkr.ecr.us-east-2.amazonaws.com/python3-poetry
       <<: *ecr-credentials
+
+  - name: python3-poetry-docker
+    type: docker-image
+    source:
+      repository: openstax/python3-poetry
+      <<: *docker-credentials
 
   - name: python-base-dockerfile
     type: git
@@ -64,7 +70,12 @@ jobs:
           build: python-base-dockerfile/python
           tag_file: generated-tag/TAG
           tag_as_latest: true
-  
+      - put: python3-base-docker
+        params:
+          build: python-base-dockerfile/python
+          tag_file: generated-tag/TAG
+          tag_as_latest: true
+
   - name: build-publish-python-poetry
     plan:
       - get: meta
@@ -72,7 +83,12 @@ jobs:
         trigger: true
       - task: generate-timestamp-tag
         file: python-poetry-dockerfile/.concourse/tasks/generate-tag/task.yml
-      - put: python3-poetry
+      - put: python3-poetry-ecr
+        params:
+          build: python-poetry-dockerfile/poetry
+          tag_file: generated-tag/TAG
+          tag_as_latest: true
+      - put: python3-poetry-docker
         params:
           build: python-poetry-dockerfile/poetry
           tag_file: generated-tag/TAG
