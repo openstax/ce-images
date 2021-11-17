@@ -1,4 +1,4 @@
-FROM 258998078732.dkr.ecr.us-east-2.amazonaws.com/python3-base:20210721.155746 as base
+FROM openstax/python3-base:20210811.190625 as base
 
 ENV POETRY_VERSION 1.1.7
 
