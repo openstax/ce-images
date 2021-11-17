@@ -1,4 +1,4 @@
-FROM openstax/python3-base:20210811.190625 as base
+FROM openstax/python3-base:20211117.170559 as base
 
 ENV POETRY_VERSION 1.1.7
 
