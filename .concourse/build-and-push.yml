@@ -41,6 +41,12 @@ resources:
     source:
       repository: openstax/python3-poetry
       <<: *docker-credentials
+  
+  - name: python3-chrome-docker
+    type: docker-image
+    source:
+      repository: openstax/python3-chrome
+      <<: *docker-credentials
 
   - name: python-base-dockerfile
     type: git
@@ -57,6 +63,14 @@ resources:
       branch: main
       paths:
         - poetry/Dockerfile
+  
+  - name: python3-chrome-dockerfile
+    type: git
+    source:
+      uri: https://github.com/openstax/ce-images.git
+      branch: main
+      paths:
+        - chrome/Dockerfile
 jobs:
   - name: build-publish-python-base
     plan:
@@ -81,6 +95,7 @@ jobs:
       - get: meta
       - get: python-base-dockerfile
         trigger: true
+        passed: [build-publish-python-base]
       - get: python-poetry-dockerfile
         trigger: true
       - task: generate-timestamp-tag
@@ -94,4 +109,20 @@ jobs:
         params:
           build: python-poetry-dockerfile/poetry
           tag_file: generated-tag/TAG
+          tag_as_latest: true
+
+  - name: build-publish-python3-chrome
+    plan:
+      - get: meta
+      - get: python-base-dockerfile
+        trigger: true
+        passed: [build-publish-python-base]
+      - get: python3-chrome-dockerfile
+        trigger: true
+      - task: generate-timestamp-tag
+        file: python-poetry-dockerfile/.concourse/tasks/generate-tag/task.yml
+      - put: python3-chrome-docker
+        params:
+          build: python3-chrome-dockerfile/chrome
+          tag_file: generated-tag/TAGz
           tag_as_latest: true
