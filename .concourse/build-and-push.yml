@@ -79,6 +79,8 @@ jobs:
   - name: build-publish-python-poetry
     plan:
       - get: meta
+      - get: python-base-dockerfile
+        trigger: true
       - get: python-poetry-dockerfile
         trigger: true
       - task: generate-timestamp-tag
