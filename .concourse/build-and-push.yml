@@ -45,7 +45,13 @@ resources:
   - name: python3-chrome-docker
     type: docker-image
     source:
-      repository: openstax/python3-chrome
+      repository: openstax/python3-chrome-base
+      <<: *docker-credentials
+  
+  - name: python3-chrome-debug-docker
+    type: docker-image
+    source:
+      repository: openstax/python3-chrome-debug
       <<: *docker-credentials
 
   - name: python-base-dockerfile
@@ -71,6 +77,14 @@ resources:
       branch: main
       paths:
         - chrome/Dockerfile
+  
+  - name: python3-chrome-debug-dockerfile
+    type: git
+    source:
+      uri: https://github.com/openstax/ce-images.git
+      branch: main
+      paths:
+        - chrome-debug/Dockerfile
 jobs:
   - name: build-publish-python-base
     plan:
@@ -120,9 +134,25 @@ jobs:
       - get: python3-chrome-dockerfile
         trigger: true
       - task: generate-timestamp-tag
-        file: python-poetry-dockerfile/.concourse/tasks/generate-tag/task.yml
+        file: python3-chrome-dockerfile/.concourse/tasks/generate-tag/task.yml
       - put: python3-chrome-docker
         params:
           build: python3-chrome-dockerfile/chrome
-          tag_file: generated-tag/TAGz
+          tag_file: generated-tag/TAG
+          tag_as_latest: true
+  
+  - name: build-publish-python3-chrome-debug
+    plan:
+      - get: meta
+      - get: python-base-dockerfile
+        trigger: true
+        passed: [build-publish-python3-chrome]
+      - get: python3-chrome-debug-dockerfile
+        trigger: true
+      - task: generate-timestamp-tag
+        file: python3-chrome-debug-dockerfile/.concourse/tasks/generate-tag/task.yml
+      - put: python3-chrome-debug-docker
+        params:
+          build: python3-chrome-debug-dockerfile/chrome-debug
+          tag_file: generated-tag/TAG
           tag_as_latest: true
