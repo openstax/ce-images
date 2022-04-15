@@ -150,7 +150,7 @@ jobs:
       - get: python3-chrome-debug-dockerfile
         trigger: true
       - task: generate-timestamp-tag
-        file: python3-chrome-dockerfile/.concourse/tasks/generate-tag/task.yml
+        file: python3-chrome-debug-dockerfile/.concourse/tasks/generate-tag/task.yml
       - put: python3-chrome-debug-docker
         params:
           build: python3-chrome-debug-dockerfile/chrome-debug
