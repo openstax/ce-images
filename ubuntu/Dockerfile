@@ -26,7 +26,6 @@ ENV TZ "UTC"
 RUN echo "${TZ}" > /etc/timezone \
   && dpkg-reconfigure --frontend noninteractive tzdata
 
-
 #===============
 # Install poetry
 #===============
