@@ -34,3 +34,13 @@ ENV POETRY_VERSION 1.1.7
 # keep this in sync with the version in pyproject.toml and Dockerfile
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:/opt/venv/bin:${PATH}"
+
+#=======================================
+# Add normal user with passwordless sudo
+#=======================================
+RUN useradd ceuser \
+         --shell /bin/bash  \
+         --create-home \
+  && usermod -a -G sudo ceuser \
+  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
+  && echo 'ceuser:secret' | chpasswd
