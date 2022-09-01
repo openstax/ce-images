@@ -20,6 +20,7 @@ do
     break
   fi
   echo Waiting xvfb...
+  echo "Attempt number $i"
   sleep 0.5
 done
 

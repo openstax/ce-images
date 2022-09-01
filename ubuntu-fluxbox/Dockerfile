@@ -3,17 +3,9 @@ FROM openstax/ubuntu-20.04:20220805.203511
 #==============================
 # Scripts to run Xvfb
 #==============================
-COPY --chown=ceuser ./entry_point.sh /opt/bin/   
+COPY --chown=ceuser ./entry_point.sh /entrypoint.sh
 
 USER root
-
-#==============
-# Xvfb
-#==============
-RUN apt-get update -qqy \
-  && apt-get -qqy install \
-    xvfb \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 #=====
 # VNC
