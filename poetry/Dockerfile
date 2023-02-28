@@ -1,8 +1,8 @@
 FROM openstax/python3-base:latest as base
 
-ENV POETRY_VERSION 1.1.7
+ENV POETRY_VERSION 1.4.0
 
 # install poetry
 # keep this in sync with the version in pyproject.toml and Dockerfile
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH "/root/.poetry/bin:/opt/venv/bin:${PATH}"
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH "/root/.local/bin:/opt/venv/bin:${PATH}"
