@@ -29,7 +29,7 @@ RUN echo "${TZ}" > /etc/timezone \
 #===============
 # Install poetry
 #===============
-ENV POETRY_VERSION 1.1.7
+ENV POETRY_VERSION 1.4.0
 # install poetry
 # keep this in sync with the version in pyproject.toml and Dockerfile
 RUN curl -sSL https://install.python-poetry.org | python3 -
