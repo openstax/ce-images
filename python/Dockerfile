@@ -1,4 +1,4 @@
-FROM python:3.8-slim-bullseye as base
+FROM python:3.11-slim-bullseye as base
 
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
