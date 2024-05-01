@@ -1,6 +1,6 @@
 FROM openstax/python3-base:latest as base
 
-ENV POETRY_VERSION 1.4.0
+ENV POETRY_VERSION 1.8.2
 
 # install poetry
 # keep this in sync with the version in pyproject.toml and Dockerfile
