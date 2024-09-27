@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bullseye as base
+FROM python:3.11-slim-bookworm AS base
 
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -21,7 +21,7 @@ RUN apt-get update -qq \
 # Timezone settings
 # Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
 #===================
-ENV TZ "UTC"
+ENV TZ="UTC"
 RUN echo "${TZ}" > /etc/timezone \
   && dpkg-reconfigure --frontend noninteractive tzdata
 
